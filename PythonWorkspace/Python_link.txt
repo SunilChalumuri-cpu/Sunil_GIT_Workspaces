@@ -1,0 +1,13 @@
+https://github.com/sudhanshukumartech/ecomm_sudh
+https://ecoommsudh.streamlit.app/
+https://ollama.com/download
+https://ollama.com/library
+C:\Users\611005937>ollama --version
+C:\Users\611005937>ollama run deepseek-r1
+
+https://www.docker.com/
+https://docs.openwebui.com/getting-started/quick-start
+--> Execute Step1 and Step2 from the above url.
+
+https://download.ngrok.com/downloads/windows
+ngrok.org --> this will make local host act as a public server to host applications.
