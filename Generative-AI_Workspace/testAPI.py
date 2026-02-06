@@ -1,6 +1,11 @@
 from fastapi import FastAPI
 from oracledb import DatabaseError
 import oracledb
+import psycopg2
+from psycopg2.extras import RealDictCursor
+from dotenv import load_dotenv
+import os
+
 
 myapp = FastAPI()
 
@@ -45,12 +50,27 @@ def save_data_to_file(students):
             file.write(f"ID: {student_id}, Name: {details['name']}, Age: {details['age']}\n")
     print("Student data saved to students_data.txt")
 
-# Oracle DB connection string
-db_connection_string = "system/12345678@192.168.1.38:1521/xepdb1"
-# Function to connect to Oracle DB
-def connect_to_db():
+# neonDB connection string
+neonDB_connection_url = os.getenv("NEON_DB_URI")
+# pip install psycopg2-binary
+# Function to connect to neonDB
+def connect_to_neonDB():
     try:
-        connection = oracledb.connect(db_connection_string)
+        connection = psycopg2.connect(neonDB_connection_url,cursor_factory=RealDictCursor)
+        print("neonDB connection successful")
+        return connection
+    except psycopg2.DatabaseError as e:
+        print(f"neonDB connection error: {e}")
+        return None
+# Function to save student data to neonDB
+
+# Oracle DB connection string
+orcl_db_connection_url = os.getenv("ORCL_DB_URI")
+# pip install oracledb
+# Function to connect to Oracle DB
+def connect_to_oracleDB():
+    try:
+        connection = oracledb.connect(orcl_db_connection_url)
         print("Database connection successful")
         return connection
     except oracledb.DatabaseError as e:
@@ -59,7 +79,10 @@ def connect_to_db():
 
 # Function to save student data to Oracle DB
 def save_data_to_db(students):
-    connection = connect_to_db()
+    # For Oracle DB
+    #connection = connect_to_oracleDB()
+    # For neonDB
+    connection = connect_to_neonDB()
     if connection:
         cursor = connection.cursor()
         for student_id, details in students.items():
@@ -73,11 +96,11 @@ def save_data_to_db(students):
         connection.commit()
         cursor.close()
         connection.close()
-        print("Student data saved to Oracle DB")
+        print("Student data saved to DB")
   
 # Function to fetch student data from Oracle DB
 def fetch_data_from_db():
-    connection = connect_to_db()
+    connection = connect_to_neonDB()
     if connection:
         cursor = connection.cursor()
         cursor.execute("SELECT student_id, name, age FROM students")
