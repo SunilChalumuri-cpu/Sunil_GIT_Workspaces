@@ -1,0 +1,6 @@
+uvicorn
+fastapi
+pydantic
+oracledb
+psycopg2-binary
+dotenv
