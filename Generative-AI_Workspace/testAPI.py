@@ -6,7 +6,6 @@ from psycopg2.extras import RealDictCursor
 from dotenv import load_dotenv
 import os
 
-
 myapp = FastAPI()
 
 @myapp.get("/simpleAPI")
@@ -50,31 +49,34 @@ def save_data_to_file(students):
             file.write(f"ID: {student_id}, Name: {details['name']}, Age: {details['age']}\n")
     print("Student data saved to students_data.txt")
 
+# Load environment variables from .env file
+load_dotenv()
 # neonDB connection string
-neonDB_connection_url = os.getenv("NEON_DB_URI")
-# pip install psycopg2-binary
+neonDB_connection_url = os.getenv("NEON_DB_URL")
+
 # Function to connect to neonDB
 def connect_to_neonDB():
     try:
+        print("Connecting to neonDB...")
+        print(f"neonDB connection URL: {neonDB_connection_url}")
         connection = psycopg2.connect(neonDB_connection_url,cursor_factory=RealDictCursor)
         print("neonDB connection successful")
         return connection
     except psycopg2.DatabaseError as e:
         print(f"neonDB connection error: {e}")
         return None
-# Function to save student data to neonDB
 
 # Oracle DB connection string
-orcl_db_connection_url = os.getenv("ORCL_DB_URI")
-# pip install oracledb
+orcl_db_connection_url = os.getenv("ORCL_DB_URL")
+
 # Function to connect to Oracle DB
 def connect_to_oracleDB():
     try:
         connection = oracledb.connect(orcl_db_connection_url)
-        print("Database connection successful")
+        print("Oracle database connection successful")
         return connection
     except oracledb.DatabaseError as e:
-        print(f"Database connection error: {e}")
+        print(f"Oracle database connection error: {e}")
         return None
 
 # Function to save student data to Oracle DB
@@ -98,7 +100,7 @@ def save_data_to_db(students):
         connection.close()
         print("Student data saved to DB")
   
-# Function to fetch student data from Oracle DB
+# Function to fetch student data from DB
 def fetch_data_from_db():
     connection = connect_to_neonDB()
     if connection:

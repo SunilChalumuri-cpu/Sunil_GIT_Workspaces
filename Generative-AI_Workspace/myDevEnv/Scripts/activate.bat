@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set "VIRTUAL_ENV=C:\Users\611005937\OneDrive - BT Plc\D Drive\Sunil_Workspaces\Generative-AI_Workspace\myDevEnv"
+set "VIRTUAL_ENV=C:\Users\611005937\OneDrive - BT Plc\D Drive\Sunil_GIT_Workspaces\Generative-AI_Workspace\myDevEnv"
 
 if not defined PROMPT set PROMPT=$P$G
 
