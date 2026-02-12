@@ -1,4 +1,0 @@
-ID: 1, Name: Zungwa, Age: 21
-ID: 2, Name: Jaffa, Age: 28
-ID: 3, Name: Daizy, Age: 30
-ID: 6, Name: Bakra, Age: 44
