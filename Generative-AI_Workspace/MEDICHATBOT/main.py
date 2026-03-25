@@ -1,8 +1,10 @@
 import streamlit as st
+from app.config import EURI_API_KEY
 from app.chat_utils import get_chat_model, ask_chat_model
 from app.pdf_utils import extract_text_from_pdf
 from app.ui import pdf_uploader
-from app.vectorstore_utils import create_faiss_index, retrieve_from_faiss_index
+from app.vectorstore_utils import create_faiss_index, retrieve_similar_documents
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 import time
 
 st.set_page_config(page_title="MediChatBot", page_icon=":robot_face:", 
@@ -113,7 +115,7 @@ with st.sidebar:
                 st.session_state.vectorstore = vectorstore
                 
                 # Initialize chat model
-                chat_model = get_chat_model()
+                chat_model = get_chat_model(EURI_API_KEY)
                 st.session_state.chat_model = chat_model
                 
                 st.success("✅ Documents processed successfully!")
@@ -144,42 +146,42 @@ if prompt := st.chat_input("Ask about your medical documents..."):
         st.caption(timestamp)
     
     # Generate response
-    # if st.session_state.vectorstore and st.session_state.chat_model:
-    #     with st.chat_message("assistant"):
-    #         with st.spinner("🔍 Searching documents..."):
-    #             # Retrieve relevant documents
-    #             relevant_docs = retrive_similar_documents(st.session_state.vectorstore, prompt)
+    if st.session_state.vectorstore and st.session_state.chat_model:
+        with st.chat_message("assistant"):
+            with st.spinner("🔍 Searching documents..."):
+                # Retrieve relevant documents
+                relevant_docs = retrieve_similar_documents(st.session_state.vectorstore, prompt)
                 
-    #             # Create context from relevant documents
-    #             context = "\n\n".join([doc.page_content for doc in relevant_docs])
+                # Create context from relevant documents
+                context = "\n\n".join([doc.page_content for doc in relevant_docs])
                 
-    #             # Create prompt with context
-    #             system_prompt = f"""You are MediChat Pro, an intelligent medical document assistant. 
-    #             Based on the following medical documents, provide accurate and helpful answers. 
-    #             If the information is not in the documents, clearly state that.
+                # Create prompt with context
+                system_prompt = f"""You are MediChat Pro, an intelligent medical document assistant. 
+                Based on the following medical documents, provide accurate and helpful answers. 
+                If the information is not in the documents, clearly state that.
 
-    #             Medical Documents:
-    #             {context}
+                Medical Documents:
+                {context}
 
-    #             User Question: {prompt}
+                User Question: {prompt}
 
-    #             Answer:"""
+                Answer:"""
                 
-    #             response = ask_chat_model(st.session_state.chat_model, system_prompt)
+                response = ask_chat_model(st.session_state.chat_model, system_prompt)
             
-    #         st.markdown(response)
-    #         st.caption(timestamp)
+            st.markdown(response)
+            st.caption(timestamp)
             
-    #         # Add assistant message to chat history
-    #         st.session_state.messages.append({
-    #             "role": "assistant", 
-    #             "content": response, 
-    #             "timestamp": timestamp
-    #         })
-    # else:
-    #     with st.chat_message("assistant"):
-    #         st.error("⚠️ Please upload and process documents first!")
-    #         st.caption(timestamp)
+            # Add assistant message to chat history
+            st.session_state.messages.append({
+                "role": "assistant", 
+                "content": response, 
+                "timestamp": timestamp
+            })
+    else:
+        with st.chat_message("assistant"):
+            st.error("⚠️ Please upload and process documents first!")
+            st.caption(timestamp)
 
 # Footer
 st.markdown("---")

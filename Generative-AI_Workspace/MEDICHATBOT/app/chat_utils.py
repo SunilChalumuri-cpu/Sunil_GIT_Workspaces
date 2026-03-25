@@ -1,11 +1,15 @@
-import os
 from euriai.langchain import create_chat_model
 
-EURI_API_KEY = os.getenv("EURI_API_KEY", "")
+API_KEY = None
+MODEL = "gpt-4.1-nano"
+TEMPERATURE = 0.7
 
-def get_chat_model(model_name: str = "gpt-3.5-turbo", temperature: float = 0.7, api_key: str = EURI_API_KEY):
+def get_chat_model(api_key: str = None):
     # Create and return a chat model instance
-    return create_chat_model(api_key=api_key, model_name=model_name, temperature=temperature)
+    return create_chat_model(
+        api_key=api_key or API_KEY,
+        model_name=MODEL,
+        temperature=TEMPERATURE)
 
 def ask_chat_model(chat_model, prompt: str):
     # Send a prompt to the chat model and return the response
