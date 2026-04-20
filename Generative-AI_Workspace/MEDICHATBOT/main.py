@@ -7,6 +7,7 @@ from app.vectorstore_utils import create_faiss_index, retrieve_similar_documents
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 import time
 
+
 st.set_page_config(page_title="MediChatBot", page_icon=":robot_face:", 
                    layout="wide", initial_sidebar_state="expanded")
 st.markdown("""
@@ -189,4 +190,4 @@ st.markdown("""
 <div style="text-align: center; color: #666; font-size: 0.9rem;">
     <p>🤖 Powered by Euri AI & LangChain | 🏥 Medical Document Intelligence</p>
 </div>
-""", unsafe_allow_html=True)    
+""", unsafe_allow_html=True)

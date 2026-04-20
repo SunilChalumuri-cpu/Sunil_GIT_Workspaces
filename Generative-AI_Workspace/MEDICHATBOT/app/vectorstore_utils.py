@@ -1,9 +1,20 @@
+import os
+import certifi
+
 from langchain_community.vectorstores import FAISS
-from langchain_community.embeddings import HuggingFaceEmbeddings
+
+try:
+    from langchain_huggingface import HuggingFaceEmbeddings
+except ImportError:
+    from langchain_community.embeddings import HuggingFaceEmbeddings
+
+# Ensure SSL verification uses a valid CA bundle on Windows/local cert stores
+os.environ.setdefault("SSL_CERT_FILE", certifi.where())
 
 def create_faiss_index(text):
-    # Create an instance of HuggingFaceEmbeddings
-    embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
+    embeddings = HuggingFaceEmbeddings(
+        model_name="sentence-transformers/all-mpnet-base-v2"
+    )
 
     # Create a FAISS index from the texts and embeddings
     return FAISS.from_texts(texts=text, embeddings=embeddings)

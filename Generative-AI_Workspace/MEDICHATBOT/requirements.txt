@@ -3,6 +3,8 @@ fpdf
 pypdf
 faiss-cpu
 langchain
+langchain-huggingface
 langchain_community
 euriai
 sentence-transformers
+certifi
