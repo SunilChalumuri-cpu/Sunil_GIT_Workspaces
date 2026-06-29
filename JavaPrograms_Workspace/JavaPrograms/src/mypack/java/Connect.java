@@ -2,20 +2,29 @@ package mypack.java;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.PreparedStatement;
+// import java.sql.ResultSet;
+// import java.sql.PreparedStatement;
 
 public class Connect {
 	public static void main(String[] ar) {
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
+			// ---For Oracle--
+			/*Class.forName("oracle.jdbc.driver.OracleDriver");
 			System.out.println("driver loaded");
 			Connection con = DriverManager.getConnection(
-					"jdbc:oracle:thin:@<hostname>:<port>/<service_name>", "username",
-					"password");
+					// "jdbc:oracle:thin:@<hostname>:<port>/<service_name>", "username",
+					// "password");
+					"jdbc:oracle:thin:@192.168.1.40:1521/XE", "SYSTEM",
+					"12345678"); */
+
+            // ---For PostgreSQL--
+			Class.forName("org.postgresql.Driver");
+			System.out.println("driver loaded");
+			Connection con = DriverManager.getConnection(
+					"jdbc:postgresql://ep-billowing-frog-aiaqy03p-pooler.c-4.us-east-1.aws.neon.tech/neondb?user=neondb_owner&password=npg_3zVBPXtJ4rDI&sslmode=require&channelBinding=require");
 			con.setAutoCommit(false);
 			System.out.println("connection established");
-			PreparedStatement ps = null;
+/* 			PreparedStatement ps = null;
 //			ps = con.prepareStatement("SELECT * FROM ACCOUNT WHERE ACC_NO = ?");
 //			ps.setString(1, "Peter");
 			ps = con.prepareStatement("SELECT * FROM ACCOUNT ");
@@ -27,7 +36,7 @@ public class Connect {
 				System.out.println(rs.getInt("ACC_NO") + "        " + rs.getString("ACC_NAME") + "        "
 						+ rs.getString("ACC_TYPE") + "     " + rs.getDouble("BAL"));
 			}
-			rs.close();
+			rs.close();*/
 			con.close();
 		} catch (Exception ex) {
 			ex.printStackTrace();
