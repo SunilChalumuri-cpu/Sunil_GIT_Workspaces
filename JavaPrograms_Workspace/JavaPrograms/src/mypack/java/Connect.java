@@ -21,7 +21,7 @@ public class Connect {
 			Class.forName("org.postgresql.Driver");
 			System.out.println("driver loaded");
 			Connection con = DriverManager.getConnection(
-					"jdbc:postgresql://ep-billowing-frog-aiaqy03p-pooler.c-4.us-east-1.aws.neon.tech/neondb?user=neondb_owner&password=npg_3zVBPXtJ4rDI&sslmode=require&channelBinding=require");
+					"jdbc:postgresql://ep-billowing-frog-aiaqy03p-pooler.c-4.us-east-1.aws.neon.tech/neondb?user=neondb_owner&password=neonpassword");
 			con.setAutoCommit(false);
 			System.out.println("connection established");
 /* 			PreparedStatement ps = null;
